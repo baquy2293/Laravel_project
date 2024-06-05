@@ -1,0 +1,120 @@
+<?php
+
+namespace modules;
+
+use modules\User\src\Http\Middlewares\DemoMiddleware;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\ServiceProvider;
+use modules\User\src\Commands\test;
+use modules\User\src\Repositories\UserRepositoryInterface;
+
+
+class ModuleServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        $modules = $this->getModule();
+        if (!empty($modules)) {
+            foreach ($modules as $moduleName) {
+                $this->registerModule($moduleName);
+            }
+        }
+    }
+
+    public function register()
+    {
+        $modules = $this->getModule();
+        if (!empty($modules)) {
+            foreach ($modules as $module) {
+                $this->registerConfig($module);
+            }
+        }
+        $this->registerMiddlewares();
+
+        $this->app->singleton(
+            UserRepositoryInterface::class,
+        );
+    }
+
+    private function registerConfig($module)
+    {
+        $configPath = __DIR__ . "/" . $module . '/configs';
+        if (file_exists($configPath)) {
+            $configFile = array_map('basename', File::allFiles($configPath));
+            foreach ($configFile as $file) {
+                $alias = basename($file, '.php');
+                $this->mergeConfigFrom($configPath . '/' . $file, $alias);
+            }
+        }
+
+    }
+
+    private function registerMiddlewares()
+    {
+        if (!empty($this->middlewares)) {
+            foreach ($this->middlewares as $key => $middleware) {
+                $this->app['router']->pushMiddlewareToGroup($key, $middleware);
+            }
+        }
+    }
+
+    private function registerModule($moduleName)
+    {
+        $modulePath = __DIR__ . "/$moduleName/";
+        // Khai báo route
+        if (File::exists($modulePath . "routes/routes.php")) {
+            $this->loadRoutesFrom($modulePath . "routes/routes.php");
+        }
+        // Khai báo migration
+// Toàn bộ file migration của modules sẽ tự động được load
+        if (File::exists($modulePath . "migrations")) {
+            $this->loadMigrationsFrom($modulePath . "migrations");
+        }
+// Khai báo languages
+        if (File::exists($modulePath . "resources/lang")) {
+// Đa ngôn ngữ theo file php
+// Dùng đa ngôn ngữ tại file php resources/lang/en/general.php : @lang('Demo::general.hello')
+
+            $this->loadTranslationsFrom($modulePath . "resources/lang", $moduleName);
+// Đa ngôn ngữ theo file json
+            $this->loadJSONTranslationsFrom($modulePath . 'resources/lang');
+        }
+// Khai báo views
+// Gọi view thì ta sử dụng: view('Demo::index'), @extends('Demo::index'), @include('Demo::index')
+        if (File::exists($modulePath . "resources/views")) {
+            $this->loadViewsFrom($modulePath . "resources/views", $moduleName);
+        }
+// Khai báo helpers
+        if (File::exists($modulePath . "helpers")) {
+// Tất cả files có tại thư mục helpers
+            $helper_dir = File::allFiles($modulePath . "helpers");
+// khai báo helpers
+            foreach ($helper_dir as $key => $value) {
+                $file = $value->getPathName();
+                require $file;
+            }
+        }
+        $middleare = [
+            'demo' => DemoMiddleware::class
+            //  'demo' => \modules\User\src\Http\Middlewares\DemoMiddleware::class,
+        ];
+
+        if (!empty($middleare)) {
+            foreach ($middleare as $key => $value) {
+                $this->app['router']->pushMiddlewareToGroup($key, $value);
+            }
+        }
+        $this->commands([
+            test::class
+        ]);
+
+    }
+
+    private function getModule()
+    {
+        $directories = array_map('basename', File::directories(__DIR__));
+        return $directories;
+    }
+
+
+}
