@@ -1,0 +1,25 @@
+<?php
+
+
+
+namespace modules\{module}\src\Repositories;
+
+use modules\{module}\src\Models\{module};
+use App\Repositories\BaseRepository;
+use modules\{module}\src\Repositories\{module}RepositoryInterface;
+
+
+class {module}Repository extends BaseRepository implements {module}RepositoryInterface
+{
+    public function getModel()
+    {
+        return {module}::class;
+    }
+
+    public function get{module}s($limit=10)
+    {
+        return $this->model->paginate($limit)->get();
+    }
+
+
+}

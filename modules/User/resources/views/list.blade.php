@@ -1,6 +1,8 @@
-@extends('layout.client')
-@section('title','Danh sach nguoi dung')
+@extends('layout.backend')
+@section('title','Quản lí người dùng ')
 @section('content',)
-    <h1>danh sach nguoi dung</h1>
+   <p>
+       lorem
+   </p>
 
 @endsection
