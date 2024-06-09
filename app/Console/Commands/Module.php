@@ -54,8 +54,8 @@ class Module extends Command
         if (!file_exists($srcFoder . '/Commands')) {
             File::makeDirectory($srcFoder . '/Commands', 0755, true, true);
         }
-        if (!file_exists($srcFoder . '/Http/Controller')) {
-            File::makeDirectory($srcFoder . '/Http/Controller', 0755, true, true);
+        if (!file_exists($srcFoder . '/Http/Controllers')) {
+            File::makeDirectory($srcFoder . '/Http/Controllers', 0755, true, true);
         }
         if (!file_exists($srcFoder . '/Http/Middlewares')) {
             File::makeDirectory($srcFoder . '/Http/Middlewares', 0755, true, true);

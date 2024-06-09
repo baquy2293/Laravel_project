@@ -10,7 +10,7 @@
                 <div class="mp-3">
                     <label for="">Tên</label>
                     <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                           placeholder="Họ Tên ..." value="{{old('name')}}">
+                           placeholder="Họ Tên ..." value="{{old('name')?? $user->name}}">
                     @error('name')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -22,7 +22,7 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Email</label>
-                    <input name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email ..." value="{{old('email')}}">
+                    <input name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email ..." value="{{old('email') ?? $user->email}}">
                     @error('email')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -59,8 +59,10 @@
 
         </div>
         <div class="col-12 m-2">
-            <button type="submit" class="btn btn-primary">Thêm</button>
+            <button type="submit" class="btn btn-primary">Lưu </button>
             <a href="{{route('admin.users.index')}}" class="btn btn-primary">Hủy</a>
         </div>
+
     </form>
+
 @endsection
