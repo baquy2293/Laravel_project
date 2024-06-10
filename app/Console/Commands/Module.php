@@ -29,7 +29,6 @@ class Module extends Command
         $name = $this->argument('name');
         if (File::exists(base_path('modules/' . $name))) {
             $this->error("Module $name already exists!");
-
         }
 // make router
         $routerFoder = base_path('modules/' . $name . '/routes');
@@ -72,9 +71,9 @@ class Module extends Command
             File::makeDirectory($resourceFoder . '/views', 0755, true, true);
         }
         // make migration
-        $migrateFoder = base_path('modules/' . $name . '/migration');
+        $migrateFoder = base_path('modules/' . $name . '/migrations');
         if (!File::exists($migrateFoder)) {
-            File::makeDirectory(base_path('modules/' . $name . '/migration'), 0755, true, true);
+            File::makeDirectory(base_path('modules/' . $name . '/migrations'), 0755, true, true);
         }
         // make config
         $configForder = base_path('modules/' . $name . '/config');
