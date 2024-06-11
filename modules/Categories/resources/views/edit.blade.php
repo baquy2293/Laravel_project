@@ -9,8 +9,8 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Tên</label>
-                    <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                           placeholder="Họ Tên ..." value="{{old('name')?? $categories->name}}">
+                    <input name="name" type="text" class="form-control title @error('name') is-invalid @enderror"
+                           placeholder="Họ Tên ..." value="{{old('name')?? $category->name}}">
                     @error('name')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -22,7 +22,7 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Slug</label>
-                    <input name="slug" class="form-control @error('slug') is-invalid @enderror" placeholder="slug ..." value="{{old('slug') ?? $categories->email}}">
+                    <input name="slug" class="form-control slug @error('slug') is-invalid @enderror" placeholder="slug ..." value="{{old('slug') ?? $category->slug}}">
                     @error('slug')
                     <div class="invalid-feedback">
                         {{$message}}

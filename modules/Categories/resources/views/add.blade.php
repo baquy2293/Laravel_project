@@ -9,7 +9,7 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Tên</label>
-                    <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                    <input name="name" type="text" class="form-control title @error('name') is-invalid @enderror"
                            placeholder="Họ Tên ..." value="{{old('name')}}">
                     @error('name')
                     <div class="invalid-feedback">
@@ -17,12 +17,12 @@
                     </div>
                     @enderror
                 </div>
-
             </div>
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Slug</label>
-                    <input name="slug" class="form-control @error('slug') is-invalid @enderror" placeholder="slug ..." value="{{old('slug')}}">
+                    <input name="slug" class="form-control slug @error('slug') is-invalid @enderror" placeholder="slug ..."
+                           value="{{old('slug')}}">
                     @error('slug')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -33,9 +33,8 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Cha</label>
-                    <select  name="parent_id" id=" " class="form-select @error('parent_id') is-invalid @enderror" >
+                    <select name="parent_id" id=" " class="form-select @error('parent_id') is-invalid @enderror">
                         <option value="0">Khoong</option>
-
                     </select>
                     @error('group_id')
                     <div class="invalid-feedback">

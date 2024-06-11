@@ -81,10 +81,11 @@ class  CategoriesControler extends Controller
 
     public function edit($id)
     {
-        $category = $this->userRepository->find($id);
+        $category = $this->categoriesRepository->find($id);
+
         if ($id) {
             $pageTitle = 'Sửa danh mục';
-            return view('User::edit', compact('category', 'pageTitle'));
+            return view('Categories::edit', compact('category', 'pageTitle'));
         } else {
             return redirect()->route('admin.categories.index');
         }
