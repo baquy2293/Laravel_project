@@ -23,6 +23,16 @@ class Category extends Authenticatable
         'parent_id',
     ];
 
+    private function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function subCategories()
+    {
+        return $this->children()->with('subCategories');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

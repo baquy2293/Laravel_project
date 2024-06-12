@@ -5,5 +5,4 @@ return [
     'failure'=>"Thêm không thành công",
     'update.success'=>"Cập nhật thành công",
     'delete.success'=>"Xóa  thành công",
-
 ];

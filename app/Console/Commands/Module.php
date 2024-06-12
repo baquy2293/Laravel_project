@@ -26,11 +26,12 @@ class Module extends Command
      */
     public function handle()
     {
+        // make module
         $name = $this->argument('name');
         if (File::exists(base_path('modules/' . $name))) {
             $this->error("Module $name already exists!");
         }
-// make router
+        // make router
         $routerFoder = base_path('modules/' . $name . '/routes');
         if (!File::exists($routerFoder)) {
             File::makeDirectory(base_path('modules/' . $name . '/routes'), 0755, true, true);
@@ -85,36 +86,22 @@ class Module extends Command
             File::put($configFile, "");
         }
         //make Reository
-
-//        File::put('D:\Xampp\htdocs\Laravel\modules/Product/src/Repository/ProductRepository.php', "<?php");
-
         $repositoryForder = base_path('modules/' . $name . '/src/Repositories');
-
         if (!file_exists($repositoryForder)) {
             File::makeDirectory($repositoryForder, 0755, true, true);
-
             if (!file_exists($repositoryForder . '/' . $name . 'Repository.php')) {
                 $pathModule = app_path('Console/Commands/Template/ModuleRipository.txt');
-
                 $moduleRepositoryFile = file_get_contents($pathModule);
                 $moduleRepositoryFile = str_replace('{module}', $name, $moduleRepositoryFile);
-//                file_put_contents($pathModule, $moduleRepositoryFile);
-
                 File::put($repositoryForder . '/' . $name . 'Repository.php', $moduleRepositoryFile);
             }
             if (!file_exists($repositoryForder . "/" . $name . 'RepositoryInterface.php')) {
                 File::put($repositoryForder . '/' . $name . 'RepositoryInterface.php', "");
                 $pathModule = app_path('Console/Commands/Template/RepositoryInterface.txt');
-
                 $moduleRepositoryFile = file_get_contents($pathModule);
                 $moduleRepositoryFile = str_replace('{module}', $name, $moduleRepositoryFile);
-//                file_put_contents($pathModule, $moduleRepositoryFile);
                 File::put($repositoryForder . '/' . $name . 'RepositoryInterface.php', $moduleRepositoryFile);
-
             }
-
         }
-
-
     }
 }

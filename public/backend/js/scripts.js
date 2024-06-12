@@ -29,6 +29,8 @@ window.addEventListener('DOMContentLoaded', event => {
         tablelist.addEventListener("click", (e) => {
             if (e.target.classList.contains("delete-action")) {
                 e.preventDefault();
+
+                // sweetalert2
                 Swal.fire({
                     title: "Bạn có chắc chắn?",
                     text: "Không thể khôi phục!",
@@ -81,15 +83,10 @@ window.addEventListener('DOMContentLoaded', event => {
 
     const title = document.querySelector('.title')
     const slug = document.querySelector('.slug')
-
     title.addEventListener('keyup', event => {
         const titlelValue = event.target.value;
-        if (titlelValue === "") {
-            slug.value = getSlug(titlelValue)
-        }
-
+        slug.value = getSlug(titlelValue)
     })
-
 
     slug.addEventListener('change', event => {
         const slug = document.querySelector('.slug')
@@ -97,8 +94,6 @@ window.addEventListener('DOMContentLoaded', event => {
             slug.value = getSlug(title.value)
         }
     })
-
-
 });
 
 

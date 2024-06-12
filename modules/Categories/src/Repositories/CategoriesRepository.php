@@ -16,9 +16,15 @@ class CategoriesRepository extends BaseRepository implements CategoriesRepositor
         return Category::class;
     }
 
-    public function getCategories($limit = 10)
+    public function getCategories()
     {
-        return $this->model->select('id', 'name', 'slug', 'parent_id','created_at')->latest('created_at');
+        return $this->model->with('subCategories')->whereParentId(0)->select('id', 'name', 'slug', 'parent_id', 'created_at')->latest('created_at');
+
+    }
+
+    public function getAllCategories()
+    {
+        return $this->getAll();
     }
 
 

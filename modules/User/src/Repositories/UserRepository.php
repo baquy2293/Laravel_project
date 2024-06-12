@@ -36,12 +36,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         if ($user) {
             $hashPassword = $user->password;
             return Hash::check($password, $hashPassword);
-
         }
         return false;
     }
-
-
-
-
 }

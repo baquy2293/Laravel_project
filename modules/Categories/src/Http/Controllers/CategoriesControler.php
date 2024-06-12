@@ -27,6 +27,7 @@ class  CategoriesControler extends Controller
     public function index()
     {
         $pageTitle = 'Quản lý danh mục';
+
         $allUser = $this->categoriesRepository->getAll();
         return view('Categories::list', compact('pageTitle', 'allUser'));
     }
@@ -35,7 +36,7 @@ class  CategoriesControler extends Controller
     {
         $categaries = $this->categoriesRepository->getCategories();
 
-        return DataTables::of($categaries)
+        $categaries = DataTables::of($categaries)
             ->editColumn('created_at', function ($category) {
                 return $category->created_at->format('d/m/Y H:i');
             })
@@ -50,13 +51,40 @@ class  CategoriesControler extends Controller
                 return ' <a href="' . route('admin.categories.delete', $category) . '" class="btn btn-danger delete-action">Xóa</a>';
             })
             ->rawColumns(['edit', 'delete', 'link'])
-            ->toJson();
+            ->toArray();
+
+        $categaries['data'] = $this->getCategoriesTable($categaries['data']);
+        return $categaries;
+    }
+
+
+    public function getCategoriesTable($categories, $char = '', &$result = [])
+    {
+        if (!empty($categories)) {
+            foreach ($categories as $key => $category) {
+                $row = $category;
+                $row['name'] = $char . $row['name'];
+                $row['edit'] = '<a href="' . route('admin.categories.edit', $category['id']) . '" class="btn btn-warning">Sửa</a>';
+                $row['delete'] = '<a href="' . route('admin.categories.delete', $category['id']) . '" class="btn btn-danger delete-action">Xóa</a>';
+                $row['link'] = '<a target="_blank" href="/danh-muc/' . $category['slug'] . '" class="btn btn-primary">Xem</a>';
+                $row['created_at'] = ($category['created_at']);
+                unset($row['sub_categories']);
+                unset($row['updated_at']);
+                $result[] = $row;
+                if (!empty($category['sub_categories'])) {
+                    $this->getCategoriesTable($category['sub_categories'], $char . '--', $result);
+                }
+            }
+        }
+
+        return $result;
     }
 
     public function create()
     {
-        $pageTitle = "Thêm danh muc";
-        return view('Categories::add', compact('pageTitle'));
+        $pageTitle = "Thêm danh mục";
+        $categories = $this->categoriesRepository->getAllCategories();
+        return view('Categories::add', compact('pageTitle', 'categories'));
     }
 
     public function store(CategoryRequest $request)
@@ -82,10 +110,11 @@ class  CategoriesControler extends Controller
     public function edit($id)
     {
         $category = $this->categoriesRepository->find($id);
+        $categories = $this->categoriesRepository->getAllCategories();
 
         if ($id) {
             $pageTitle = 'Sửa danh mục';
-            return view('Categories::edit', compact('category', 'pageTitle'));
+            return view('Categories::edit', compact('category', 'pageTitle', 'categories'));
         } else {
             return redirect()->route('admin.categories.index');
         }

@@ -34,7 +34,8 @@
                 <div class="mp-3">
                     <label for="">Cha</label>
                     <select name="parent_id" id=" " class="form-select @error('parent_id') is-invalid @enderror">
-                        <option value="0">Khoong</option>
+                     <option value="0">Khong</option>
+                      {{getCategories($categories,old('parent_id'))}}
                     </select>
                     @error('group_id')
                     <div class="invalid-feedback">

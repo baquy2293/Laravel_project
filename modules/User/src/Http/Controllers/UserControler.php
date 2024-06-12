@@ -28,7 +28,6 @@ class  UserControler extends Controller
         $pageTitle = 'Quản lý người dùng';
         $allUser = $this->userRepository->getAll();
         return view('User::list', compact('pageTitle', 'allUser'));
-
     }
 
     public function data()
@@ -92,7 +91,6 @@ class  UserControler extends Controller
     {
         $this->userRepository->delete($user);
         return redirect()->route('admin.users.index')->with('msg', __('User::messages.delete.success'));
-//    return "a";
     }
 
 }

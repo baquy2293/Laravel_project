@@ -21,6 +21,12 @@ class ModuleServiceProvider extends ServiceProvider
         }
     }
 
+    private function getModule()
+    {
+        $directories = array_map('basename', File::directories(__DIR__));
+        return $directories;
+    }
+
     public function register()
     {
         $modules = $this->getModule();
@@ -30,7 +36,6 @@ class ModuleServiceProvider extends ServiceProvider
             }
         }
         $this->registerMiddlewares();
-
         $this->app->singleton(
             UserRepositoryInterface::class,
         );
@@ -46,7 +51,6 @@ class ModuleServiceProvider extends ServiceProvider
                 $this->mergeConfigFrom($configPath . '/' . $file, $alias);
             }
         }
-
     }
 
     private function registerMiddlewares()
@@ -58,33 +62,39 @@ class ModuleServiceProvider extends ServiceProvider
         }
     }
 
-    private function registerModule($moduleName)
+    private function registeRoute($modulePath)
     {
-        $modulePath = __DIR__ . "/$moduleName/";
-        // Khai báo route
         if (File::exists($modulePath . "routes/routes.php")) {
             $this->loadRoutesFrom($modulePath . "routes/routes.php");
         }
-        // Khai báo migration
-// Toàn bộ file migration của modules sẽ tự động được load
+    }
+
+    private function registerMigration($modulePath)
+    {
         if (File::exists($modulePath . "migrations")) {
             $this->loadMigrationsFrom($modulePath . "migrations");
         }
-// Khai báo languages
-        if (File::exists($modulePath . "resources/lang")) {
-// Đa ngôn ngữ theo file php
-// Dùng đa ngôn ngữ tại file php resources/lang/en/general.php : @lang('Demo::general.hello')
+    }
 
-            $this->loadTranslationsFrom($modulePath . "resources/lang", $moduleName);
-// Đa ngôn ngữ theo file json
+    private function registerLanguage($modulePath, $moduleName)
+    {
+        if (File::exists($modulePath . "resources/lang")) {
+            // Đa ngôn ngữ theo file php
+            // Dùng đa ngôn ngữ tại file php resources/lang/en/general.php : @lang('Demo::general.hello')
+            $this->loadTranslationsFrom($modulePath . "resources/lang", $moduleName);// Đa ngôn ngữ theo file json
             $this->loadJSONTranslationsFrom($modulePath . 'resources/lang');
         }
-// Khai báo views
-// Gọi view thì ta sử dụng: view('Demo::index'), @extends('Demo::index'), @include('Demo::index')
+    }
+
+    private function registerView($modulePath, $moduleName)
+    {
         if (File::exists($modulePath . "resources/views")) {
             $this->loadViewsFrom($modulePath . "resources/views", $moduleName);
         }
-// Khai báo helpers
+    }
+
+    private function registerHelper($modulePath)
+    {
         if (File::exists($modulePath . "helpers")) {
 // Tất cả files có tại thư mục helpers
             $helper_dir = File::allFiles($modulePath . "helpers");
@@ -94,26 +104,39 @@ class ModuleServiceProvider extends ServiceProvider
                 require $file;
             }
         }
+    }
+
+    private function registerMiddle()
+    {
         $middleare = [
             'demo' => DemoMiddleware::class
-            //  'demo' => \modules\User\src\Http\Middlewares\DemoMiddleware::class,
         ];
-
         if (!empty($middleare)) {
             foreach ($middleare as $key => $value) {
                 $this->app['router']->pushMiddlewareToGroup($key, $value);
             }
         }
-        $this->commands([
-            test::class
-        ]);
 
     }
 
-    private function getModule()
+    private function registerModule($moduleName)
     {
-        $directories = array_map('basename', File::directories(__DIR__));
-        return $directories;
+        $modulePath = __DIR__ . "/$moduleName/";
+        // Khai báo route
+        $this->registeRoute($modulePath);
+        // Khai báo migration
+        // Toàn bộ file migration của modules sẽ tự động được load
+        $this->registerMigration($modulePath);
+
+        // Khai báo languages
+        $this->registerLanguage($modulePath, $moduleName);
+
+// Khai báo views
+// Gọi view thì ta sử dụng: view('Demo::index'), @extends('Demo::index'), @include('Demo::index')
+        $this->registerView($modulePath, $moduleName);
+// Khai báo helpers
+        $this->registerHelper($modulePath,);
+        $this->registerMiddle();
     }
 
 
