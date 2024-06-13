@@ -88,6 +88,7 @@ class ModuleServiceProvider extends ServiceProvider
 
     private function registerView($modulePath, $moduleName)
     {
+
         if (File::exists($modulePath . "resources/views")) {
             $this->loadViewsFrom($modulePath . "resources/views", $moduleName);
         }

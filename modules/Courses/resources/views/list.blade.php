@@ -8,7 +8,8 @@
         <thead>
         <tr>
             <th>Tên</th>
-            <th>Link</th>
+            <th>Email</th>
+            <th>Nhóm</th>
             <th>Thời gian</th>
             <th>Sửa</th>
             <th>Xóa</th>
@@ -17,7 +18,8 @@
         <tfoot>
         <tr>
             <th>Tên</th>
-            <th>Link</th>
+            <th>Email</th>
+            <th>Nhóm</th>
             <th>Thời gian</th>
             <th>Sửa</th>
             <th>Xóa</th>
@@ -33,14 +35,16 @@
                 autoWidth: false,
                 processing: true,
                 serverSide: true,
-                pageLength: 2,
-                ajax: "{{route('admin.categories.data')}}",
+                ajax: "{{route('admin.users.data')}}",
                 columns: [
                     {
                         data: 'name',
                     },
                     {
-                        data: 'link',
+                        data: 'email',
+                    },
+                    {
+                        data: 'group_id',
                     },
                     {
                         data: 'created_at',
