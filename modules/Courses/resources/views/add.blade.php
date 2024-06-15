@@ -113,7 +113,7 @@
             <div class="col-12">
                 <div class="mp-3">
                     <label for="">Hỗ trợ</label>
-                    <textarea name="support" type="text" class="form-control @error('code') is-invalid @enderror"
+                    <textarea name="support" type="text" class="form-control tkeditor @error('code') is-invalid @enderror"
                               placeholder="Hỗ trợ..." value="{{old('code')}}"></textarea>
                     @error('code')
                     <div class="invalid-feedback">
@@ -125,40 +125,40 @@
             <div class="col-12">
                 <div class="mp-3">
                     <label for="">Nội dung</label>
-                    <textarea name="content" type="text" class="form-control @error('content') is-invalid @enderror"
-                              placeholder="Nội dung..." value="{{old('content')}}"></textarea>
-                    @error('content')
+                    <textarea name="detail" type="text"
+                              class="form-control ckeditor @error('content') is-invalid @enderror"
+                              placeholder="Nội dung..." value="{{old('detail')}}"></textarea>
+                    @error('detail')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
                     @enderror
                 </div>
             </div>
-
             <div class="col-12">
                 <div class="mb-3">
                     <div class="row align-items-end">
                         <div class="col-5">
+{{--                            dung file manager--}}
+
                             <label for="">Ảnh đại diện</label>
-                            <input name="thubnail" type="text"
-                                   class="form-control @error('thubnail') is-invalid @enderror"
-                                   placeholder="Ảnh đại diện ..." value="{{old('thubnail')}}">
-                            @error('thubnail')
+                            <input name="thumbnail" type="text"
+                                   class="form-control @error('thumbnail') is-invalid @enderror"
+                                   placeholder="Ảnh đại diện ..." value="{{old('thumbnail')}}" id="thumbnail" >
+                            @error('thumbnail')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
                             @enderror
                         </div>
                         <div class="col-4">
-                            <button class="btn btn-primary" type="button">
+                            <button class="btn btn-primary" type="button"  id="lfm" data-input="thumbnail" data-preview="holder" >
                                 <i class="fa fa-save"></i>
                                 Thêm vào
                             </button>
                         </div>
-                        <div class="col-2 d-grid">
-                            <img
-                                src="https://photo.znews.vn/w660/Uploaded/qhj_yvobvhfwbv/2018_07_18/Nguyen_Huy_Binh1.jpg"
-                                alt="">
+                        <div class="col-3 ">
+                           <div id = "holder"  style="margin-top:15px;max-height:100px;"></div>
                         </div>
                     </div>
                 </div>
@@ -178,5 +178,16 @@
             height: auto;
         }
     </style>
+
+@endsection
+@section('scripts')
+    <script>
+        ClassicEditor.create(document.querySelector('.conent'))
+            .catch(
+                error => {
+                    console.error(error);
+                }
+            );
+    </script>
 
 @endsection

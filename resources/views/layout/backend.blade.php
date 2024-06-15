@@ -7,11 +7,11 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <title>{{$pageTitle}}</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-    <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet" />
+    <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-@yield('stytesheets')
+    @yield('stytesheets')
 </head>
 <body class="sb-nav-fixed">
 @include('parts.backend.header')
@@ -35,7 +35,12 @@
 </script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
 <script src="{{asset('backend/js/scripts.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{asset('backend/plugins/ckeditor/ckeditor.js')}}"></script>
+<script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+<script>
+    $('#lfm').filemanager('image');
+</script>
+
 @yield('scripts')
 </body>
 </html>
