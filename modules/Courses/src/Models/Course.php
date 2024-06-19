@@ -19,9 +19,17 @@ class Course extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
-        'password',
-        'group_id'
+        'slug',
+        'detail',
+        'teacher_id',
+        'thumbnail',
+        'price',
+        'sale_price',
+        'code',
+        'durations',
+        'is_doccument',
+        'support',
+        'status',
     ];
 
     /**

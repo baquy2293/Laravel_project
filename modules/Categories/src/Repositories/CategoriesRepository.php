@@ -5,7 +5,7 @@ namespace modules\Categories\src\Repositories;
 
 use modules\Categories\src\Models\Categories;
 use App\Repositories\BaseRepository;
-use modules\Categories\src\Models\Category;
+use modules\Categories\src\Models\Course;
 use modules\Categories\src\Repositories\CategoriesRepositoryInterface;
 
 
@@ -13,7 +13,7 @@ class CategoriesRepository extends BaseRepository implements CategoriesRepositor
 {
     public function getModel()
     {
-        return Category::class;
+        return Course::class;
     }
 
     public function getCategories()

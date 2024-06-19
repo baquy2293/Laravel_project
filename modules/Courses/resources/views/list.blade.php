@@ -8,9 +8,10 @@
         <thead>
         <tr>
             <th>Tên</th>
-            <th>Email</th>
-            <th>Nhóm</th>
+            <th>Giá</th>
+            <th>Trạng thái</th>
             <th>Thời gian</th>
+            
             <th>Sửa</th>
             <th>Xóa</th>
         </tr>
@@ -18,9 +19,10 @@
         <tfoot>
         <tr>
             <th>Tên</th>
-            <th>Email</th>
-            <th>Nhóm</th>
+            <th>Giá</th>
+            <th>Trạng thái</th>
             <th>Thời gian</th>
+
             <th>Sửa</th>
             <th>Xóa</th>
         </tr>
@@ -35,16 +37,16 @@
                 autoWidth: false,
                 processing: true,
                 serverSide: true,
-                ajax: "{{route('admin.users.data')}}",
+                ajax: "{{route('admin.courses.data')}}",
                 columns: [
                     {
                         data: 'name',
                     },
                     {
-                        data: 'email',
+                        data: 'price',
                     },
                     {
-                        data: 'group_id',
+                        data: 'status',
                     },
                     {
                         data: 'created_at',

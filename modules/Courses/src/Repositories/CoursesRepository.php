@@ -16,7 +16,8 @@ class CoursesRepository extends BaseRepository implements CoursesRepositoryInter
 
     public function getAllCourses()
     {
-        return $this->model->select('id', 'name', 'price', 'status', 'created_at');
+        $data =  $this->model->select('id', 'name', 'price', 'status', 'created_at');
+        return $data;
     }
 
 }

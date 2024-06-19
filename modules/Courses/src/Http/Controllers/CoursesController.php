@@ -10,6 +10,7 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 use modules\Courses\src\Models\Course;
 use Yajra\DataTables\Facades\DataTables;
 use function Symfony\Component\String\u;
+use modules\Courses\src\Http\Requests\CoursesRequest;
 
 
 class  CoursesController extends Controller
@@ -17,10 +18,11 @@ class  CoursesController extends Controller
 
 
     protected $coursesRepository;
-public function __construct(CoursesRepository $coursesRepository)
-{
-    $this->coursesRepository = $coursesRepository;
-}
+
+    public function __construct(CoursesRepository $coursesRepository)
+    {
+        $this->coursesRepository = $coursesRepository;
+    }
 
     public function index()
     {
@@ -31,7 +33,7 @@ public function __construct(CoursesRepository $coursesRepository)
 
     public function data()
     {
-        $courses = $this->coursesRepository->getAllcourse();
+        $courses = $this->coursesRepository->getAllCourses();
         return DataTables::of($courses)
             ->editColumn('created_at', function ($course) {
                 return $course->created_at->format('d/m/Y H:i');
@@ -55,13 +57,19 @@ public function __construct(CoursesRepository $coursesRepository)
 
     public function store(CoursesRequest $request)
     {
-        $this->coursesRepository->create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'group_id' => $request->group_id,
-        ]);
-        return redirect()->route('admin.cours.index')->with('msg', __('Course::messages.create.success'));
+
+        $courses = $request->except(['_token']);
+        if (!$courses['sale_price']) {
+            $courses['sale_price'] = 0;
+        }
+
+        if (!$courses['price']) {
+            $courses['price'] = 0;
+        }
+
+
+        $this->coursesRepository->create($courses);
+        return redirect()->route('admin.courses.index')->with('msg', __('Courses::messages.create.success'));
     }
 
     public function update(CourseRequest $request, $course)

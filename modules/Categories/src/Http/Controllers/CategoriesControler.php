@@ -9,7 +9,7 @@ use modules\Categories\src\Http\Requests\CategoryRequest;
 use modules\Categories\src\Repositories\CategoriesRepository;
 use Yajra\DataTables\Facades\DataTables;
 
-use modules\Categories\src\Models\Category;
+use modules\Categories\src\Models\Course;
 use function Symfony\Component\String\u;
 
 

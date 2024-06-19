@@ -35,11 +35,11 @@
                 <div class="mp-3">
                     <label for="">Giảng viên</label>
                     <select name="teacher_id" id=" " class="form-select @error('teacher_id') is-invalid @enderror">
-                        <option value="0">Chọn giảng viên</option>
-                        <option value="1">Bá Quý</option>
+                        <option value="0"> Chọn giảng viên</option>
+                        <option value="1" {{old('teacher_id')==1 ? 'selected' : false }} >Bá Quý</option>
 
                     </select>
-                    @error('group_id')
+                    @error('teacher_id')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -62,7 +62,7 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Giá khóa học</label>
-                    <input name="price" type="text" class="form-control @error('price') is-invalid @enderror"
+                    <input name="price" type="number" class="form-control @error('price') is-invalid @enderror"
                            placeholder="Giá khóa học ..." value="{{old('price')}}">
                     @error('price')
                     <div class="invalid-feedback">
@@ -74,9 +74,10 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Giá khuyến mãi </label>
-                    <input name="discount" type="text" class="form-control @error('discount') is-invalid @enderror"
-                           placeholder="Khuyến mãi khóa học ..." value="{{old('discount')}}">
-                    @error('discount')
+                    <input name="sale_price" type="number"
+                           class="form-control @error('sale_price') is-invalid @enderror"
+                           placeholder="Khuyến mãi khóa học ..." value="{{old('sale_price')}}">
+                    @error('sale_price')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -86,10 +87,11 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Tài liệu đi kèm</label>
-                    <select name="doccument" id=" " class="form-select @error('doccument') is-invalid @enderror">
-                        <option value="0">Chọn tài liệu</option>
+                    <select name="is_document" id=" " class="form-select @error('is_document') is-invalid @enderror">
+                        <option value="0" {{ old('is_document') == 0 ? 'selected' : false }}>Không</option>
+                        <option value="1" {{ old('is_document') == 1 ? 'selected' : false }}>Có</option>
                     </select>
-                    @error('doccument')
+                    @error('is_document')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -101,7 +103,7 @@
                     <label for="">Trạng thái </label>
                     <select name="status" id=" " class="form-select @error('status') is-invalid @enderror">
                         <option value="0">Chưa ra mắt</option>
-                        <option value="1">Đã ra mắt</option>
+                        <option value="1" {{old('status')==1 ? 'selected': false}} >Đã ra mắt</option>
                     </select>
                     @error('status')
                     <div class="invalid-feedback">
@@ -113,9 +115,10 @@
             <div class="col-12">
                 <div class="mp-3">
                     <label for="">Hỗ trợ</label>
-                    <textarea name="support" type="text" class="form-control tkeditor @error('code') is-invalid @enderror"
-                              placeholder="Hỗ trợ..." value="{{old('code')}}"></textarea>
-                    @error('code')
+                    <textarea name="support" type="text"
+                              class="form-control  @error('support') is-invalid @enderror"
+                              placeholder="Hỗ trợ...">{{old('support')}}</textarea>
+                    @error('support')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -126,8 +129,8 @@
                 <div class="mp-3">
                     <label for="">Nội dung</label>
                     <textarea name="detail" type="text"
-                              class="form-control ckeditor @error('content') is-invalid @enderror"
-                              placeholder="Nội dung..." value="{{old('detail')}}"></textarea>
+                              class="form-control ckeditor @error('detail') is-invalid @enderror"
+                              placeholder="Nội dung...">{{old('detail')}}</textarea>
                     @error('detail')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -135,16 +138,29 @@
                     @enderror
                 </div>
             </div>
+            {{--            <div class="col-12">--}}
+            {{--                <div class="mb-3">--}}
+            {{--                    <label for="">Chuyên mục</label>--}}
+            {{--                    <div class="list-categories">--}}
+            {{--                        {{ getCategoriesCheckbox($categories, old('categories')) }}--}}
+            {{--                    </div>--}}
+            {{--                    @error('categories')--}}
+            {{--                    <div class="invalid-feedback d-block">--}}
+            {{--                        {{ $message }}--}}
+            {{--                    </div>--}}
+            {{--                    @enderror--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
             <div class="col-12">
                 <div class="mb-3">
                     <div class="row align-items-end">
                         <div class="col-5">
-{{--                            dung file manager--}}
+                            {{--                            dung file manager--}}
 
                             <label for="">Ảnh đại diện</label>
                             <input name="thumbnail" type="text"
                                    class="form-control @error('thumbnail') is-invalid @enderror"
-                                   placeholder="Ảnh đại diện ..." value="{{old('thumbnail')}}" id="thumbnail" >
+                                   placeholder="Ảnh đại diện ..." value="{{old('thumbnail')}}" id="thumbnail">
                             @error('thumbnail')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -152,21 +168,26 @@
                             @enderror
                         </div>
                         <div class="col-4">
-                            <button class="btn btn-primary" type="button"  id="lfm" data-input="thumbnail" data-preview="holder" >
+                            <button class="btn btn-primary" type="button" id="lfm" data-input="thumbnail"
+                                    data-preview="holder">
                                 <i class="fa fa-save"></i>
                                 Thêm vào
                             </button>
                         </div>
                         <div class="col-3 ">
-                           <div id = "holder"  style="margin-top:15px;max-height:100px;"></div>
+                            <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+                            @if(old('thumbnail'))
+                                <img src="{{ old('thumbnail') }}"/>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-12 m-2">
-            <button type="submit" class="btn btn-primary">Thêm</button>
+            <button type="submit" class="btn btn-primary"> Thêm</button>
             <a href="{{route('admin.courses.index')}}" class="btn btn-danger">Hủy</a>
+
         </div>
     </form>
 @endsection
@@ -178,7 +199,6 @@
             height: auto;
         }
     </style>
-
 @endsection
 @section('scripts')
     <script>
@@ -189,5 +209,4 @@
                 }
             );
     </script>
-
 @endsection
