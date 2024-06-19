@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Course extends Authenticatable
+class Category extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -25,7 +25,7 @@ class Course extends Authenticatable
 
     private function children()
     {
-        return $this->hasMany(Course::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
     public function subCategories()

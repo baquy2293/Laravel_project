@@ -27,7 +27,7 @@ class Course extends Authenticatable
         'sale_price',
         'code',
         'durations',
-        'is_doccument',
+        'is_document',
         'support',
         'status',
     ];

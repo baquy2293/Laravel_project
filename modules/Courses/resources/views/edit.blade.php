@@ -1,4 +1,5 @@
 @extends('layout.backend')
+
 @section('content')
     @if (session('msg'))
         <div class="alert alert-success">{{session('msg')}}</div>
@@ -9,8 +10,8 @@
             <div class="col-6">
                 <div class="mp-3">
                     <label for="">Tên</label>
-                    <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                           placeholder="Họ Tên ..." value="{{old('name')?? $user->name}}">
+                    <input name="name" type="text" class="form-control title @error('name') is-invalid @enderror"
+                           placeholder="Họ Tên ..." value="{{ old('name') ?? $course->name}}">
                     @error('name')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -21,9 +22,10 @@
             </div>
             <div class="col-6">
                 <div class="mp-3">
-                    <label for="">Email</label>
-                    <input name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email ..." value="{{old('email') ?? $user->email}}">
-                    @error('email')
+                    <label for="">Slug</label>
+                    <input name="slug" class="form-control slug @error('slug') is-invalid @enderror"
+                           placeholder="Slug ..." value="{{ old('slug') ??$course->slug }}">
+                    @error('slug')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -32,13 +34,13 @@
             </div>
             <div class="col-6">
                 <div class="mp-3">
-                    <label for="">Nhóm</label>
-                    <select  name="group_id" id=" " class="form-select @error('group_id') is-invalid @enderror" >
-                        <option value="0">Chọn Nhóm</option>
-                        <option value="1">Chọn Nhóm1</option>
-                        <option value="2">Chọn Nhóm1</option>
+                    <label for="">Giảng viên</label>
+                    <select name="teacher_id" id=" " class="form-select @error('teacher_id') is-invalid @enderror">
+                        <option value="0" {{old('teacher_id')==0 || $course->teacher_id==0? 'selected' : false }}> Chọn giảng viên</option>
+                        <option value="1" {{old('teacher_id')==1 || $course->teacher_id==1? 'selected' : false }} >Bá Quý</option>
+
                     </select>
-                    @error('group_id')
+                    @error('teacher_id')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -47,9 +49,10 @@
             </div>
             <div class="col-6">
                 <div class="mp-3">
-                    <label for="">Mật khẩu</label>
-                    <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Mật khẩu ..." value="">
-                    @error('password')
+                    <label for="">Mã khóa học </label>
+                    <input name="code" type="text" class="form-control @error('code') is-invalid @enderror"
+                           placeholder="Mã khóa học ..." value="{{old('code') ?? $course->code}}">
+                    @error('code')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -57,12 +60,159 @@
                 </div>
             </div>
 
+            <div class="col-6">
+                <div class="mp-3">
+                    <label for="">Giá khóa học</label>
+                    <input name="price" type="number" class="form-control @error('price') is-invalid @enderror"
+                           placeholder="Giá khóa học ..." value="{{old('price') ?? $course->price}}">
+                    @error('price')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mp-3">
+                    <label for="">Giá khuyến mãi </label>
+                    <input name="sale_price" type="number"
+                           class="form-control @error('sale_price') is-invalid @enderror"
+                           placeholder="Khuyến mãi khóa học ..." value="{{old('sale_price') ?? $course->sale_price}}">
+                    @error('sale_price')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mp-3">
+                    <label for="">Tài liệu đi kèm</label>
+                    <select name="is_document" id=" " class="form-select @error('is_document') is-invalid @enderror">
+                        <option value="0" {{ old('is_document') == 0 || $course->is_document==0? 'selected' : false }}>
+                            Không
+                        </option>
+                        <option value="1" {{ old('is_document') == 1||$course->is_document==1 ? 'selected' : false }}>
+                            Có
+                        </option>
+                    </select>
+                    @error('is_document')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mp-3">
+                    <label for="">Trạng thái </label>
+                    <select name="status" id=" " class="form-select @error('status') is-invalid @enderror">
+                        <option value="0" {{old('status')==0 ?$course->status==0|| 'selected': false}}>Chưa ra mắt</option>
+                        <option value="1" {{old('status')==1 ?$course->status==1|| 'selected': false}} >Đã ra mắt</option>
+                    </select>
+                    @error('status')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mp-3">
+                    <label for="">Hỗ trợ</label>
+                    <textarea name="support" type="text"
+                              class="form-control  @error('support') is-invalid @enderror"
+                              placeholder="Hỗ trợ...">{{old('support')??$course->support}}</textarea>
+                    @error('support')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="mp-3">
+                    <label for="">Nội dung</label>
+                    <textarea name="detail" type="text"
+                              class="form-control ckeditor @error('detail') is-invalid @enderror"
+                              placeholder="Nội dung...">{{old('detail')??$course->detail}}</textarea>
+                    @error('detail')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            {{--            <div class="col-12">--}}
+            {{--                <div class="mb-3">--}}
+            {{--                    <label for="">Chuyên mục</label>--}}
+            {{--                    <div class="list-categories">--}}
+            {{--                        {{ getCategoriesCheckbox($categories, old('categories')) }}--}}
+            {{--                    </div>--}}
+            {{--                    @error('categories')--}}
+            {{--                    <div class="invalid-feedback d-block">--}}
+            {{--                        {{ $message }}--}}
+            {{--                    </div>--}}
+            {{--                    @enderror--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
+            <div class="col-12">
+                <div class="mb-3">
+                    <div class="row align-items-end">
+                        <div class="col-5">
+                            {{--                            dung file manager--}}
+
+                            <label for="">Ảnh đại diện</label>
+                            <input name="thumbnail" type="text"
+                                   class="form-control @error('thumbnail') is-invalid @enderror"
+                                   placeholder="Ảnh đại diện ..." value="{{old('thumbnail') ?? $course->thumbnail}}"
+                                   id="thumbnail">
+                            @error('thumbnail')
+                            <div class="invalid-feedback">
+                                {{$message}}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-primary" type="button" id="lfm" data-input="thumbnail"
+                                    data-preview="holder">
+                                <i class="fa fa-save"></i>
+                                Thêm vào
+                            </button>
+                        </div>
+                        <div class="col-3 ">
+                            <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+                            @if(old('thumbnail') ||$course->thumbnail  )
+                                <img src="{{ old('thumbnail') ?? $course->thumbnail }}"/>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-12 m-2">
-            <button type="submit" class="btn btn-primary">Lưu </button>
-            <a href="{{route('admin.users.index')}}" class="btn btn-primary">Hủy</a>
-        </div>
+            <button type="submit" class="btn btn-primary">Sửa</button>
+            <a href="{{route('admin.courses.index')}}" class="btn btn-danger">Hủy</a>
 
+        </div>
     </form>
 
+@endsection
+@section('stytesheets')
+    <style>
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+@endsection
+@section('scripts')
+    <script>
+        ClassicEditor.create(document.querySelector('.conent'))
+            .catch(
+                error => {
+                    console.error(error);
+                }
+            );
+    </script>
 @endsection

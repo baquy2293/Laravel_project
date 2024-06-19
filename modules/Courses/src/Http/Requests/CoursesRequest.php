@@ -3,7 +3,7 @@
 namespace modules\Courses\src\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use modules\Categories\src\Models\Course;
+use modules\Categories\src\Models\Category;
 
 class CoursesRequest extends FormRequest
 {

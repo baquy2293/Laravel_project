@@ -16,5 +16,3 @@ function getCategories($categories, $old = "", $parent_id = 0, $char = "")
     }
 
 }
-
-

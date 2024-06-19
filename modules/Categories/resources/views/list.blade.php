@@ -1,6 +1,7 @@
 @extends('layout.backend')
+@section('title','Quản lí người dùng ')
 @section('content')
-    <p><a href="{{route('admin.courses.create')}}" class="btn btn-primary">Thêm mới</a></p>
+    <p><a href="{{route('admin.categories.create')}}" class="btn btn-primary">Thêm mới</a></p>
     @if (session('msg'))
         <div class="alert alert-success">{{session('msg')}}</div>
     @endif

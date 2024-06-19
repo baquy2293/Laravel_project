@@ -43,6 +43,7 @@ class  UserControler extends Controller
             })
             ->addColumn('delete', function ($user) {
                 return ' <a href="' . route('admin.users.delete', $user) . '" class="btn btn-danger delete-action">Xóa</a>';
+
             })
             ->rawColumns(['edit', 'delete'])
             ->toJson();

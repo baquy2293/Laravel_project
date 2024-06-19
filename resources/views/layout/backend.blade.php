@@ -37,6 +37,7 @@
 <script src="{{asset('backend/js/scripts.js')}}"></script>
 <script src="{{asset('backend/plugins/ckeditor/ckeditor.js')}}"></script>
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $('#lfm').filemanager('image');
 </script>

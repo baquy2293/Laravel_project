@@ -45,6 +45,21 @@ class  CoursesController extends Controller
             ->addColumn('delete', function ($course) {
                 return ' <a href="' . route('admin.courses.delete', $course) . '" class="btn btn-danger delete-action">Xóa</a>';
             })
+            ->editColumn('price', function ($course) {
+                if ($course->price) {
+                    $price = number_format($course->price) . 'đ';
+                } else {
+                    $price = "Miễn phí ";
+                }
+                return $price;
+            })
+            ->addColumn('status', function ($course) {
+                if ($course->status) {
+                    return "Đã ra mắt";
+                } else {
+                    return "Chưa ra mắt";
+                }
+            })
             ->rawColumns(['edit', 'delete'])
             ->toJson();
     }
@@ -66,20 +81,24 @@ class  CoursesController extends Controller
         if (!$courses['price']) {
             $courses['price'] = 0;
         }
-
-
         $this->coursesRepository->create($courses);
         return redirect()->route('admin.courses.index')->with('msg', __('Courses::messages.create.success'));
     }
 
-    public function update(CourseRequest $request, $course)
+    public function update(CoursesRequest $request, $course)
     {
-        $data = $request->except(['_token', 'password']);
-        if ($request->password) {
-            $data['password'] = Hash::make($request->password);
+        $courses = $request->except(['_token']);
+        if (!$courses['sale_price']) {
+            $courses['sale_price'] = 0;
         }
-        $this->coursesRepository->update($course, $data);
-        return back()->with('msg', __('Course::messages.update.success'));
+
+        if (!$courses['price']) {
+            $courses['price'] = 0;
+        }
+
+        $this->coursesRepository->update($course, $courses);
+
+        return back()->with('msg', __('Courses::messages.update.success'));
 
     }
 
@@ -88,7 +107,7 @@ class  CoursesController extends Controller
         $course = $this->coursesRepository->find($course);
         if ($course) {
             $pageTitle = 'Sửa người dùng';
-            return view('Course::edit', compact('course', 'pageTitle'));
+            return view('Courses::edit', compact('course', 'pageTitle'));
         } else {
             return redirect()->route('admin.courses.index');
         }
@@ -97,7 +116,7 @@ class  CoursesController extends Controller
     public function delete($course)
     {
         $this->coursesRepository->delete($course);
-        return redirect()->route('admin.courses.index')->with('msg', __('course::messages.delete.success'));
+        return redirect()->route('admin.courses.index')->with('msg', __('Courses::messages.delete.success'));
     }
 
 }

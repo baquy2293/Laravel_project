@@ -29,7 +29,6 @@ window.addEventListener('DOMContentLoaded', event => {
         tablelist.addEventListener("click", (e) => {
             if (e.target.classList.contains("delete-action")) {
                 e.preventDefault();
-
                 // sweetalert2
                 Swal.fire({
                     title: "Bạn có chắc chắn?",
