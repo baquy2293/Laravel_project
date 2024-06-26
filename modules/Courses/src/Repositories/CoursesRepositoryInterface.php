@@ -9,5 +9,6 @@ interface CoursesRepositoryInterface extends RepositoryInterface
 
     public function getAllCourses();
 
+
 }
 

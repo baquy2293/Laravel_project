@@ -16,8 +16,33 @@ class CoursesRepository extends BaseRepository implements CoursesRepositoryInter
 
     public function getAllCourses()
     {
-        $data =  $this->model->select('id', 'name', 'price', 'status', 'created_at');
+        $data = $this->model->select('id', 'name', 'price', 'status', 'created_at');
         return $data;
     }
+
+    public function getAllCategory()
+    {
+        $data = $this->getAll();
+    }
+
+    public function createCoursesCategory($course, $data)
+    {
+//        dd($course);
+        $course->categories()->attach($data);
+    }
+
+    public function getRelatedCategories($couese)
+    {
+        return $couese->categories()->allRelatedIds()->toArray();
+    }
+
+    public function updateCoursesCatagory($course, $data)
+    {
+        $course->categories()->sync($data);
+    }
+    public function deleteCoursesCatagory($course){
+        $course->categories()->detach();
+    }
+
 
 }

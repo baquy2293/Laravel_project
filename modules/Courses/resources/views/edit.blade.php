@@ -36,8 +36,12 @@
                 <div class="mp-3">
                     <label for="">Giảng viên</label>
                     <select name="teacher_id" id=" " class="form-select @error('teacher_id') is-invalid @enderror">
-                        <option value="0" {{old('teacher_id')==0 || $course->teacher_id==0? 'selected' : false }}> Chọn giảng viên</option>
-                        <option value="1" {{old('teacher_id')==1 || $course->teacher_id==1? 'selected' : false }} >Bá Quý</option>
+                        <option value="0" {{old('teacher_id')==0 || $course->teacher_id==0? 'selected' : false }}> Chọn
+                            giảng viên
+                        </option>
+                        <option value="1" {{old('teacher_id')==1 || $course->teacher_id==1? 'selected' : false }} >Bá
+                            Quý
+                        </option>
 
                     </select>
                     @error('teacher_id')
@@ -107,8 +111,10 @@
                 <div class="mp-3">
                     <label for="">Trạng thái </label>
                     <select name="status" id=" " class="form-select @error('status') is-invalid @enderror">
-                        <option value="0" {{old('status')==0 ?$course->status==0|| 'selected': false}}>Chưa ra mắt</option>
-                        <option value="1" {{old('status')==1 ?$course->status==1|| 'selected': false}} >Đã ra mắt</option>
+                        <option value="0" {{old('status')==0 ?$course->status==0|| 'selected': false}}>Chưa ra mắt
+                        </option>
+                        <option value="1" {{old('status')==1 ?$course->status==1|| 'selected': false}} >Đã ra mắt
+                        </option>
                     </select>
                     @error('status')
                     <div class="invalid-feedback">
@@ -143,19 +149,21 @@
                     @enderror
                 </div>
             </div>
-            {{--            <div class="col-12">--}}
-            {{--                <div class="mb-3">--}}
-            {{--                    <label for="">Chuyên mục</label>--}}
-            {{--                    <div class="list-categories">--}}
-            {{--                        {{ getCategoriesCheckbox($categories, old('categories')) }}--}}
-            {{--                    </div>--}}
-            {{--                    @error('categories')--}}
-            {{--                    <div class="invalid-feedback d-block">--}}
-            {{--                        {{ $message }}--}}
-            {{--                    </div>--}}
-            {{--                    @enderror--}}
-            {{--                </div>--}}
-            {{--            </div>--}}
+            <div class="col-12">
+                <div class="mb-3">
+                    <label for="">Chuyên mục</label>
+                    <div class="list-categories">
+                        {{
+                        getCategoriesCheckbox($categories,old('categories',$category_id));
+                        }}
+                    </div>
+                    @error('categories')
+                    <div class="invalid-feedback d-block">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+            </div>
             <div class="col-12">
                 <div class="mb-3">
                     <div class="row align-items-end">

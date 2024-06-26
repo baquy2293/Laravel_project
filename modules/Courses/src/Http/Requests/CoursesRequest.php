@@ -22,11 +22,11 @@ class CoursesRequest extends FormRequest
      */
     public function rules()
     {
-//        $id = $this->route()->course;
-//        $uniqueRule = 'unique:Courses,code';
-//        if ($id) {
-//            $uniqueRule .= ',' . $id;
-//        }
+        $id = $this->route()->course;
+        $uniqueRule = 'unique:Courses,code';
+        if ($id) {
+            $uniqueRule .= ',' . $id;
+        }
         $rules = [
             'name' => 'required|max:255',
             'slug' => 'required|max:255',
@@ -37,11 +37,11 @@ class CoursesRequest extends FormRequest
                 }
             }],
             'thumbnail' => 'required|max:255',
-            'code' => 'required|max:255',
+            'code' => 'required|max:255|' . $uniqueRule,
             'is_document' => 'required|integer',
             'support' => 'required',
             'status' => 'required|integer',
-//            'categories' => 'required',
+            'categories' => 'required',
         ];
 
         return $rules;

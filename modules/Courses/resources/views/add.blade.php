@@ -138,19 +138,21 @@
                     @enderror
                 </div>
             </div>
-            {{--            <div class="col-12">--}}
-            {{--                <div class="mb-3">--}}
-            {{--                    <label for="">Chuyên mục</label>--}}
-            {{--                    <div class="list-categories">--}}
-            {{--                        {{ getCategoriesCheckbox($categories, old('categories')) }}--}}
-            {{--                    </div>--}}
-            {{--                    @error('categories')--}}
-            {{--                    <div class="invalid-feedback d-block">--}}
-            {{--                        {{ $message }}--}}
-            {{--                    </div>--}}
-            {{--                    @enderror--}}
-            {{--                </div>--}}
-            {{--            </div>--}}
+            <div class="col-12">
+                <div class="mb-3">
+                    <label for="">Chuyên mục</label>
+                    <div class="list-categories">
+                        {{
+                        getCategoriesCheckbox($categories,old('categories'));
+                        }}
+                    </div>
+                    @error('categories')
+                    <div class="invalid-feedback d-block">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+            </div>
             <div class="col-12">
                 <div class="mb-3">
                     <div class="row align-items-end">
@@ -198,6 +200,11 @@
             max-width: 100px;
             height: auto;
         }
+        .list-categories{
+            max-height: 200px;
+            overflow: auto;
+        }
+
     </style>
 @endsection
 @section('scripts')

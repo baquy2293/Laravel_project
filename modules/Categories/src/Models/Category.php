@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use modules\Courses\src\Models\Course;
 
 class Category extends Authenticatable
 {
@@ -31,6 +32,9 @@ class Category extends Authenticatable
     public function subCategories()
     {
         return $this->children()->with('subCategories');
+    }
+    public function courses(){
+        $this->belongsToMany(Course::class,'categories_courses');
     }
 
     /**

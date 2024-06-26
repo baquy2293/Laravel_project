@@ -3,6 +3,7 @@
 namespace modules\Courses\src\Http\Controllers;
 
 use \App\Http\Controllers\Controller;
+use modules\Categories\src\Repositories\CategoriesRepository;
 use modules\Courses\src\Repositories\CoursesRepository;
 
 use Illuminate\Support\Facades\Hash;
@@ -11,17 +12,19 @@ use modules\Courses\src\Models\Course;
 use Yajra\DataTables\Facades\DataTables;
 use function Symfony\Component\String\u;
 use modules\Courses\src\Http\Requests\CoursesRequest;
-
+use Carbon\Carbon;
 
 class  CoursesController extends Controller
 {
 
 
     protected $coursesRepository;
+    protected $categoriesRepository;
 
-    public function __construct(CoursesRepository $coursesRepository)
+    public function __construct(CoursesRepository $coursesRepository, CategoriesRepository $categoriesRepository)
     {
         $this->coursesRepository = $coursesRepository;
+        $this->categoriesRepository = $categoriesRepository;
     }
 
     public function index()
@@ -67,7 +70,8 @@ class  CoursesController extends Controller
     public function create()
     {
         $pageTitle = "Thêm khóa học";
-        return view('Courses::add', compact('pageTitle'));
+        $categories = $this->categoriesRepository->getAllCategories();
+        return view('Courses::add', compact('pageTitle', 'categories'));
     }
 
     public function store(CoursesRequest $request)
@@ -81,9 +85,14 @@ class  CoursesController extends Controller
         if (!$courses['price']) {
             $courses['price'] = 0;
         }
-        $this->coursesRepository->create($courses);
+
+        $course = $this->coursesRepository->create($courses);
+        $categories = $this->getCategories($courses);
+
+        $this->coursesRepository->createCoursesCategory($course, $categories);
         return redirect()->route('admin.courses.index')->with('msg', __('Courses::messages.create.success'));
     }
+
 
     public function update(CoursesRequest $request, $course)
     {
@@ -97,6 +106,11 @@ class  CoursesController extends Controller
         }
 
         $this->coursesRepository->update($course, $courses);
+        $categories = $this->getCategories($courses);
+        $course = $this->coursesRepository->find($course);
+
+        $this->coursesRepository->updateCoursesCatagory($course, $categories);
+
 
         return back()->with('msg', __('Courses::messages.update.success'));
 
@@ -105,9 +119,13 @@ class  CoursesController extends Controller
     public function edit($course)
     {
         $course = $this->coursesRepository->find($course);
+
+        $category_id = $this->coursesRepository->getRelatedCategories($course);
+
         if ($course) {
-            $pageTitle = 'Sửa người dùng';
-            return view('Courses::edit', compact('course', 'pageTitle'));
+            $pageTitle = 'Sửa Khoá học';
+            $categories = $this->categoriesRepository->getAllCategories();
+            return view('Courses::edit', compact('course', 'pageTitle', 'categories', 'category_id'));
         } else {
             return redirect()->route('admin.courses.index');
         }
@@ -115,8 +133,22 @@ class  CoursesController extends Controller
 
     public function delete($course)
     {
-        $this->coursesRepository->delete($course);
+        $course = $this->coursesRepository->find($course);
+        $this->coursesRepository->deleteCoursesCatagory($course);
+        $this->coursesRepository->delete($course->id);
         return redirect()->route('admin.courses.index')->with('msg', __('Courses::messages.delete.success'));
+    }
+
+    public function getCategories($courses = null)
+    {
+        $categories = [];
+        foreach ($courses['categories'] as $category) {
+            $categories[$category] = [
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()];
+        }
+        return $categories;
+
     }
 
 }

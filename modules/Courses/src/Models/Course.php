@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use modules\Categories\src\Models\Category;
 
 class Course extends Authenticatable
 {
@@ -31,6 +32,11 @@ class Course extends Authenticatable
         'support',
         'status',
     ];
+
+    public function categories()
+    {
+       return $this->belongsToMany(Category::class, 'categories_courses');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
